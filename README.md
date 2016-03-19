@@ -1,13 +1,23 @@
 # ml-gpio
 
+## Required
+
+* ml-pinmux
+
 ## API
 
 ``` js
+/* Read api */
 
-gpio(
+gpioRead(
   pin, // nubmer
-  mode, // string: OUTPUT/INPUT
-  func, // number
+  method, // string, pullup or pulldown
+)
+
+/* Write api */
+
+gpioWrite(
+  pin, // nubmer
   value, // number
 )
 
@@ -16,6 +26,7 @@ gpio(
 ## Example
 
 ``` js
-  gpio(35, 'OUTPUT', 8, 0);
+  pinmux(35, 8);
+  gpioWrite(35, 0);
 
 ```
