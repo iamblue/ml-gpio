@@ -9,14 +9,14 @@
 ``` js
 /* Read api */
 
-gpioRead(
+__gpioRead(
   pin, // nubmer
   method, // string, pullup or pulldown
 )
 
 /* Write api */
 
-gpioWrite(
+__gpioWrite(
   pin, // nubmer
   value, // number
 )
@@ -26,7 +26,7 @@ gpioWrite(
 ## Example
 
 ``` js
-  pinmux(35, 8);
-  gpioWrite(35, 0);
+  __pinmux(35, 8);
+  __gpioWrite(35, 0);
 
 ```
