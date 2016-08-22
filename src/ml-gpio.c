@@ -1,13 +1,13 @@
 #include <string.h>
 
-#include "jerry.h"
+#include "jerry-api.h"
 #include "hal_gpio.h"
 #include "microlattice.h"
 
 DELCARE_HANDLER(__gpioWrite) {
 
-  int pin = (int)args_p[0].v_float32;
-  int status = (int)args_p[1].v_float32;
+  int pin = (int) jerry_get_number_value(args_p[0]);
+  int status = (int) jerry_get_number_value(args_p[1]);
 
   hal_gpio_status_t ret;
   ret = hal_gpio_init(pin);
@@ -15,25 +15,16 @@ DELCARE_HANDLER(__gpioWrite) {
   ret = hal_gpio_set_output(pin, status);
   ret = hal_gpio_deinit(pin);
 
-  ret_val_p->type = JERRY_API_DATA_TYPE_BOOLEAN;
-  ret_val_p->v_bool = true;
-  return true;
-
+  return jerry_create_boolean (true);
 }
 
 DELCARE_HANDLER(__gpioRead) {
 
-  int pin = (int)args_p[0].v_float32;
-  /* method_buffer */
-  // int method_req_sz = jerry_api_string_to_char_buffer(args_p[1].v_string, NULL, 0);
-  // method_req_sz *= -1;
-  // char method_buffer [method_req_sz+1]; // 不能有*
-  // method_req_sz = jerry_api_string_to_char_buffer (args_p[1].v_string, (jerry_api_char_t *) method_buffer, method_req_sz);
-  // method_buffer[method_req_sz] = '\0';
+  int pin = (int) jerry_get_number_value(args_p[0]);
 
-  int method_req_sz = -jerry_api_string_to_char_buffer (args_p[1].v_string, NULL, 0);
-  char * method_buffer = (char*) malloc (method_req_sz);
-  method_req_sz = jerry_api_string_to_char_buffer (args_p[1].v_string, method_buffer, method_req_sz);
+  jerry_size_t method_req_sz = jerry_get_string_size (args_p[1]);
+  jerry_char_t method_buffer[method_req_sz];
+  jerry_string_to_char_buffer (args_p[1], method_buffer, method_req_sz);
   method_buffer[method_req_sz] = '\0';
 
   hal_gpio_status_t ret;
@@ -51,9 +42,7 @@ DELCARE_HANDLER(__gpioRead) {
   ret = hal_gpio_disable_pull(pin);
   ret = hal_gpio_deinit(pin);
 
-  ret_val_p->type = JERRY_API_DATA_TYPE_FLOAT64;
-  ret_val_p->v_float64 = gpio_data;
-  return true;
+  return jerry_create_number ((double) gpio_data);;
 }
 
 void ml_gpio_init(void)
