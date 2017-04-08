@@ -1,6 +1,6 @@
 {
   "name": "ml-gpio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The gpio package for Microlattice.js",
   "supportIC": [
     "mt7687"
